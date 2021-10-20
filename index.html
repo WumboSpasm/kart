@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>3D</title>
+        <style>
+            body {
+                color: #fff;
+                background-color: #000;
+            }
+            canvas {
+                position: absolute;
+                top: 50%; left: 50%;
+                transform: translate(-50%, -50%) scale(2, 2);
+                image-rendering: crisp-edges;
+                image-rendering: pixelated;
+            }
+            div {
+                white-space: pre;
+            }
+        </style>
+        <script defer src="movement.js"></script>
+        <script defer src="render.js"></script>
+        <script defer src="loader.js"></script>
+    </head>
+    <body>
+        <canvas></canvas>
+        <div></div>
+    </body>
+</html>
