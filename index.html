@@ -14,16 +14,25 @@
                 image-rendering: crisp-edges;
                 image-rendering: pixelated;
             }
-            div {
+            
+            #background { z-index: 0; }
+            #render     { z-index: 1; }
+            #sprites    { z-index: 2; }
+            
+            #debug {
                 white-space: pre;
             }
         </style>
+        <script defer src="global.js"></script>
         <script defer src="movement.js"></script>
         <script defer src="render.js"></script>
+        <script defer src="sprites.js"></script>
         <script defer src="loader.js"></script>
     </head>
     <body>
-        <canvas></canvas>
-        <div></div>
+        <canvas id="background"></canvas>
+        <canvas id="render"></canvas>
+        <canvas id="sprites"></canvas>
+        <div id="debug">
     </body>
 </html>

@@ -1,56 +1,44 @@
-const player = {
-    x: 0,
-    y: 0,
-    a: 0,
-    r: 20,
-    vel: {
-        x: 0,
-        y: 0,
-        a: 0,
-        r: 0
-    },
-    speed: 2,
-    freefly: false,
-    time: 0,
-    get mult() { 
-        if (!this.freefly)
-            return data.collision.data[getPixel(Math.trunc(player.x), Math.trunc(player.y), data.map.width, 1)] / 255;
-        else
-            return 1;
-    }
-}
-const time = {
-    then: Date.now(),
-    now: 0,
-    dif: 0
-}
-
 document.addEventListener('keydown', key => {
     if (!key.repeat) {
         switch (key.code) {
             case 'ArrowLeft':
-                player.vel.a = -player.speed;
+                game.cam.vel.a = -game.cam.speed;
                 break;
             case 'ArrowRight':
-                player.vel.a = player.speed;
+                game.cam.vel.a = game.cam.speed;
                 break;
             case 'ArrowUp':
-                player.vel.y = -player.speed;
+                game.cam.vel.y = -game.cam.speed;
                 break;
             case 'ArrowDown':
-                player.vel.y = player.speed;
+                game.cam.vel.y = game.cam.speed;
                 break;
             case 'KeyW':
-                player.vel.r = player.speed;
+                game.cam.vel.z = game.cam.speed;
                 break;
             case 'KeyS':
-                player.vel.r = -player.speed;
+                game.cam.vel.z = -game.cam.speed;
                 break;
             case 'KeyA':
-                player.vel.x = -player.speed;
+                game.cam.vel.x = -game.cam.speed;
                 break;
             case 'KeyD':
-                player.vel.x = player.speed;
+                game.cam.vel.x = game.cam.speed;
+                break;
+            case 'Space':
+                game.cam.freefly = !game.cam.freefly;
+                break;
+            case 'KeyR':
+                game.cam.vel.r = game.cam.speed;
+                break;
+            case 'KeyF':
+                game.cam.vel.r = -game.cam.speed;
+                break;
+            case 'KeyT':
+                game.cam.vel.d = game.cam.speed;
+                break;
+            case 'KeyG':
+                game.cam.vel.d = -game.cam.speed;
                 break;
         }
     }
@@ -59,19 +47,27 @@ document.addEventListener('keyup', key => {
     switch (key.code) {
         case 'ArrowLeft':
         case 'ArrowRight':
-            player.vel.a = 0;
+            game.cam.vel.a = 0;
             break;
         case 'ArrowUp':
         case 'ArrowDown':
-            player.vel.y = 0;
+            game.cam.vel.y = 0;
             break;
         case 'KeyW':
         case 'KeyS':
-            player.vel.r = 0;
+            game.cam.vel.z = 0;
             break;
         case 'KeyA':
         case 'KeyD':
-            player.vel.x = 0;
+            game.cam.vel.x = 0;
+            break;
+        case 'KeyR':
+        case 'KeyF':
+            game.cam.vel.r = 0;
+            break;
+        case 'KeyT':
+        case 'KeyG':
+            game.cam.vel.d = 0;
             break;
     }
 });
@@ -89,31 +85,32 @@ const turn = {
     x(x, y, cx, cy, a) { return (dmath.cos(a) * (x - cx)) - (dmath.sin(a) * (y - cy)) + cx },
     y(x, y, cx, cy, a) { return (dmath.cos(a) * (y - cy)) + (dmath.sin(a) * (x - cx)) + cy }
 }
-const bound = {
-    width(i)  { return Math.max(0, Math.min(data.map.width, i)) },
-    height(i) { return Math.max(0, Math.min(data.map.height, i)) }
-}
+const collision = (x, y, c) => array.collision.data[getPixel(Math.trunc(x), Math.trunc(y), array.map.width, c)]
 
 function updatePos() {
-    time.now = Date.now();
-    time.dif = time.now - time.then;
-    time.then = time.now;
+    game.frame.now = Date.now();
+    game.frame.dif = game.frame.now - game.frame.then;
+    game.frame.then = game.frame.now;
     
-    player.time = time.dif / (1000 / 60);
+    game.cam.time = game.frame.dif / (1000 / 60);
     
-    if (player.vel.x || player.vel.y) {
-        let tempX = bound.width (player.x + turn.x((player.vel.x * player.mult) * player.time, (player.vel.y * player.mult) * player.time, 0, 0, -player.a)),
-            tempY = bound.height(player.y + turn.y((player.vel.x * player.mult) * player.time, (player.vel.y * player.mult) * player.time, 0, 0, -player.a))
+    if (game.cam.vel.x || game.cam.vel.y) {
+        let tempX = game.cam.x + turn.x((game.cam.vel.x * game.cam.mult) * game.cam.time, (game.cam.vel.y * game.cam.mult) * game.cam.time, 0, 0, -game.cam.a),
+            tempY = game.cam.y + turn.y((game.cam.vel.x * game.cam.mult) * game.cam.time, (game.cam.vel.y * game.cam.mult) * game.cam.time, 0, 0, -game.cam.a)
         
-        if (data.collision.data[getPixel(Math.trunc(tempX), Math.trunc(player.y), data.map.width, 2)] != 255 || player.freefly)
-            player.x = tempX;
-        if (data.collision.data[getPixel(Math.trunc(player.x), Math.trunc(tempY), data.map.width, 2)] != 255 || player.freefly)
-            player.y = tempY;
+        if (collision(tempX, game.cam.y, 2) != 255 || game.cam.freefly)
+            game.cam.x = tempX;
+        if (collision(game.cam.x, tempY, 2) != 255 || game.cam.freefly)
+            game.cam.y = tempY;
     }
-    if (player.vel.a)
-        player.a = ((player.a - (player.vel.a * player.time)) + 360) % 360;
-    if (player.vel.r)
-        player.r += player.vel.r;
+    if (game.cam.vel.z)
+        game.cam.z += game.cam.vel.z;
+    if (game.cam.vel.a)
+        game.cam.a = ((game.cam.a - (game.cam.vel.a * game.cam.time)) + 360) % 360;
+    if (game.cam.vel.r)
+        render.lower += game.cam.vel.r;
+    if (game.cam.vel.d)
+        game.cam.d += game.cam.vel.d;
     
     requestAnimationFrame(updatePos);
 }
