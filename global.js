@@ -1,25 +1,7 @@
-const track = [
-    {
-        name: 'Test Track',
-        path: [
-            'track.png',
-            'collision.png',
-            'background.png'
-        ]
-    }
-];
-const char = [
-    {
-        name: 'Mario',
-        path: 'mario.png',
-        size: 32,
-        scale: 1.5,
-        angles: 16
-    }
-];
 const game = {
     width: 320,
     height: 200,
+    get scale() { return this.height / 200 },
     
     track: 0,
     char: 0,
@@ -41,7 +23,6 @@ const game = {
             y: 0,
             z: 0,
             a: 0,
-            r: 0,
             d: 0
         },
         speed: 2,
@@ -70,3 +51,23 @@ const game = {
         }
     }
 };
+
+const char = [
+    {
+        name: 'Mario',
+        path: 'mario.png',
+        size: 32,
+        scale: 1.5,
+        angles: 16
+    }
+];
+const track = [
+    {
+        name: 'Test Track',
+        path: [
+            'track.png',
+            'collision.png',
+            'background.png'
+        ]
+    }
+];

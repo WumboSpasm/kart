@@ -29,15 +29,9 @@ document.addEventListener('keydown', key => {
                 game.cam.freefly = !game.cam.freefly;
                 break;
             case 'KeyR':
-                game.cam.vel.r = game.cam.speed;
-                break;
-            case 'KeyF':
-                game.cam.vel.r = -game.cam.speed;
-                break;
-            case 'KeyT':
                 game.cam.vel.d = game.cam.speed;
                 break;
-            case 'KeyG':
+            case 'KeyF':
                 game.cam.vel.d = -game.cam.speed;
                 break;
         }
@@ -63,10 +57,6 @@ document.addEventListener('keyup', key => {
             break;
         case 'KeyR':
         case 'KeyF':
-            game.cam.vel.r = 0;
-            break;
-        case 'KeyT':
-        case 'KeyG':
             game.cam.vel.d = 0;
             break;
     }
@@ -107,8 +97,6 @@ function updatePos() {
         game.cam.z += game.cam.vel.z;
     if (game.cam.vel.a)
         game.cam.a = ((game.cam.a - (game.cam.vel.a * game.cam.time)) + 360) % 360;
-    if (game.cam.vel.r)
-        render.lower += game.cam.vel.r;
     if (game.cam.vel.d)
         game.cam.d += game.cam.vel.d;
     
