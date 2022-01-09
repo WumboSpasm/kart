@@ -9,7 +9,7 @@ function sprites() {
     ctx.clearRect(0, 0, game.width, game.height);
     
     let y  = (game.cam.z / (game.cam.y - game.player.y)) * (game.height / 2),
-        x  = ((game.player.x - game.cam.x) / (game.cam.z / y)) + (game.width / 2),
+        x  = ((game.player.x - game.cam.x) * (y / game.cam.z)) + (game.width / 2),
         ry = Math.round(turn.y(x, y, game.width / 2, game.height, game.cam.a)),
         rx = Math.round(turn.x(x, y, game.width / 2, game.height, game.cam.a)),
     

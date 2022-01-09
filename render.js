@@ -87,14 +87,15 @@ function render() {
     if (document.querySelector('#debug'))
         document.querySelector('#debug').textContent = 
             'FPS: ' + Math.trunc(60 / game.cam.time) + '\n' + 
-            'Multiplier: ' + game.cam.time + '\n\n' + 
-            'X: ' + game.cam.x + '\n' + 
-            'Y: ' + game.cam.y + '\n' + 
-            'Z: ' + game.cam.z + '\n' +
-            'Angle: ' + game.cam.a + '\n' + 
-            'X Velocity: ' + game.cam.vel.x * game.cam.time + '\n' +
-            'Y Velocity: ' + game.cam.vel.y * game.cam.time + '\n' +
-            'Angle Velocity: ' + game.cam.vel.a * game.cam.time + '\n\n' +
+            'Multiplier: ' + Math.trunc(game.cam.time * 100) / 100 + '\n\n' + 
+            'X: ' + Math.trunc(game.cam.x * 100) / 100 + '\n' + 
+            'Y: ' + Math.trunc(game.cam.y * 100) / 100 + '\n' + 
+            'Z: ' + Math.trunc(game.cam.z * 100) / 100 + '\n' +
+            'Angle: ' + Math.trunc(game.cam.a * 100) / 100 + '\n\n' + 
+            'X Velocity: ' + Math.trunc(game.cam.vel.x * game.cam.time * 100) / 100 + '\n' +
+            'Y Velocity: ' + Math.trunc(game.cam.vel.y * game.cam.time * 100) / 100 + '\n' +
+            'Z Velocity: ' + Math.trunc(game.cam.vel.z * game.cam.time * 100) / 100 + '\n' +
+            'Angle Velocity: ' + Math.trunc(game.cam.vel.a * game.cam.time * 100) / 100 + '\n\n' +
             'Freefly: ' + game.cam.freefly;
     
     requestAnimationFrame(render);
