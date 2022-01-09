@@ -8,23 +8,20 @@ function sprites() {
     
     ctx.clearRect(0, 0, game.width, game.height);
     
-    let x  = game.player.x - game.cam.x,
-        y  = game.player.y - game.cam.y + (game.height / 2),
-        mx = (x / (game.cam.z / y)) + (game.width / 2),
-        my = y,
-        rx = Math.round(turn.x(mx, my, game.width / 2, game.height, game.cam.a)),
-        ry = Math.round(turn.y(mx, my, game.width / 2, game.height, game.cam.a));
+    let y  = (game.cam.z / (game.cam.y - game.player.y)) * (game.height / 2),
+        x  = ((game.player.x - game.cam.x) / (game.cam.z / y)) + (game.width / 2),
+        ry = Math.round(turn.y(x, y, game.width / 2, game.height, game.cam.a)),
+        rx = Math.round(turn.x(x, y, game.width / 2, game.height, game.cam.a)),
     
-    if (rx >= 0 && rx < game.width && ry >= 0 && ry < game.height) {
-        let distSize = (ry / (game.height / 2)) * (char[game.char].size * char[game.char].scale) * (20 / game.cam.z) * game.scale;
-        
+        distSize = (ry / (game.height / 2)) * (char[game.char].size * char[game.char].scale) * (20 / game.cam.z) * game.scale;
+    
+    if (rx >= -(distSize / 2) && rx < game.width + (distSize / 2) && ry >= 0 && ry < game.height)
         ctx.drawImage(
             char[game.char].image, sprites.offset, 0, char[game.char].size, char[game.char].size, 
-            rx - (distSize / 2) + Math.trunc((game.cam.z / ry) / 2),
-            ry + (game.height / 2) - distSize + Math.trunc((game.cam.z / ry) / 2),
+            rx - (Math.trunc(distSize + (game.cam.z / ry)) / 2),
+            ry - distSize + Math.trunc((game.height + (game.cam.z / ry)) / 2),
             distSize, distSize
         );
-    }
     
     requestAnimationFrame(sprites);
 }
