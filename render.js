@@ -35,18 +35,25 @@ const scaleImage = (img) => {
     
     return canvas;
 };
+/*
+    Steps taken to produce pseudo-3D render:
+    
+    1. Game iterates through every pixel in lower half of screen each frame
+    2. Map position at given pixel is calculated
+    3. Color values of pixel at map position are applied to screen pixel
+*/
 function getCoords(x, y) {
     /*
-    let mapY = game.cam.y + (y - render.lower),
-        mapX = game.cam.x + (x - (canvas.width / 2)),
+    let mx = game.cam.x + x - (game.width  / 2),
+        my = game.cam.y + y - (game.height / 2),
     */
-    let mapX = game.cam.x + ((x - (game.width / 2)) / ((1 + y) * (render.rise / array.hyp))),
-        mapY = game.cam.y + ((y - render.lower) / ((1 + y) * (render.rise / array.hyp))) + game.cam.d,
-        
-        rotX = Math.floor(turn.x(mapX, mapY, game.cam.x, game.cam.y, -game.cam.a)),
-        rotY = Math.floor(turn.y(mapX, mapY, game.cam.x, game.cam.y, -game.cam.a));
-        
-    return [rotX, rotY];
+    let mx = game.cam.x + ((x - (game.width  / 2)) * (game.cam.z / y)),
+        my = game.cam.y + ((y - (game.height / 2)) * (game.cam.z / y)),
+    
+        rx = Math.round(turn.x(mx, my, game.cam.x, game.cam.y, -game.cam.a)),
+        ry = Math.round(turn.y(mx, my, game.cam.x, game.cam.y, -game.cam.a));
+    
+    return [rx, ry];
 }
 
 // Draw map
@@ -58,50 +65,37 @@ function render() {
         array.map       = convertImage(game.track, 0);
         array.collision = convertImage(game.track, 1);
         
-        array.hyp = Math.hypot(array.map.width, array.map.height);
-        
-        // Height of area below horizon
-        render.lower = canvas.height / 2;
-        // Z offset of render
-        render.rise = array.map.width / game.cam.z;
-        
-        render.img = ctx.createImageData(canvas.width, render.lower);
-        
-        ctx.imageSmoothingEnabled = false;
+        render.img = ctx.createImageData(canvas.width, game.height / 2);
         
         init = false;
     }
-    if (game.cam.vel.z)
-        render.rise = array.map.width / game.cam.z;
-    if (game.cam.vel.r)
-        render.img = ctx.createImageData(canvas.width, render.lower);
     
-    for (let y = 0; y < render.lower; y++) {
+    for (let y = 1; y <= game.height / 2; y++) {
         for (let x = 0; x < canvas.width; x++) {
             let coords = getCoords(x, y);
             
             if (coords[0] >= array.map.width || coords[0] < 0 || coords[1] >= array.map.height || coords[1] < 0)
-                render.img.data[getPixel(x, y, canvas.width, 3)] = 0;
+                render.img.data[getPixel(x, y - 1, canvas.width, 3)] = 0;
             else
                 for (let c = 0; c < 4; c++)
-                    render.img.data[getPixel(x, y, canvas.width, c)] = array.map.data[getPixel(coords[0], coords[1], array.map.width, c)];
+                    render.img.data[getPixel(x, y - 1, canvas.width, c)] = array.map.data[getPixel(coords[0], coords[1], array.map.width, c)];
         }
     }
     
-    ctx.putImageData(render.img, 0, canvas.height - render.lower);
+    ctx.putImageData(render.img, 0, canvas.height - game.height / 2);
     
     if (document.querySelector('#debug'))
-        document.querySelector('#debug').textContent = 'FPS: ' + Math.trunc(60 / game.cam.time) + '\n' + 
-                                                       'Multiplier: ' + game.cam.time + '\n\n' + 
-                                                       'X: ' + game.cam.x + '\n' + 
-                                                       'Y: ' + game.cam.y + '\n' + 
-                                                       'Z: ' + game.cam.z + '\n' +
-                                                       'Angle: ' + game.cam.a + '\n' + 
-                                                       'Dist: ' + game.cam.d + '\n\n' +
-                                                       'X Velocity: ' + game.cam.vel.x * game.cam.time + '\n' +
-                                                       'Y Velocity: ' + game.cam.vel.y * game.cam.time + '\n' +
-                                                       'Angle Velocity: ' + game.cam.vel.a * game.cam.time + '\n\n' +
-                                                       'Freefly: ' + game.cam.freefly;
+        document.querySelector('#debug').textContent = 
+            'FPS: ' + Math.trunc(60 / game.cam.time) + '\n' + 
+            'Multiplier: ' + game.cam.time + '\n\n' + 
+            'X: ' + game.cam.x + '\n' + 
+            'Y: ' + game.cam.y + '\n' + 
+            'Z: ' + game.cam.z + '\n' +
+            'Angle: ' + game.cam.a + '\n' + 
+            'X Velocity: ' + game.cam.vel.x * game.cam.time + '\n' +
+            'Y Velocity: ' + game.cam.vel.y * game.cam.time + '\n' +
+            'Angle Velocity: ' + game.cam.vel.a * game.cam.time + '\n\n' +
+            'Freefly: ' + game.cam.freefly;
     
     requestAnimationFrame(render);
 }
