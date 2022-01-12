@@ -8,18 +8,18 @@ function sprites() {
     
     ctx.clearRect(0, 0, game.width, game.height);
     
-    let y  = (game.cam.z / (game.cam.y - game.player.y)) * (game.height / 2),
-        x  = ((game.player.x - game.cam.x) * (y / game.cam.z)) + (game.width / 2),
-        ry = Math.round(turn.y(x, y, game.width / 2, game.height, game.cam.a)),
-        rx = Math.round(turn.x(x, y, game.width / 2, game.height, game.cam.a)),
+    let x = turn.x(game.player.x, game.player.y, game.cam.x, game.cam.y, game.cam.a) - game.cam.x,
+        y = game.cam.y - turn.y(game.player.x, game.player.y, game.cam.x, game.cam.y, game.cam.a),
+        my  = (game.cam.z / (y + game.cam.z)) * (game.height / 2),
+        mx  = (x * (my / game.cam.z)) + (game.width / 2),
     
-        distSize = (ry / (game.height / 2)) * (char[game.char].size * char[game.char].scale) * (20 / game.cam.z) * game.scale;
+        distSize = (my / (game.height / 2)) * (char[game.char].size * char[game.char].scale) * (20 / game.cam.z) * game.scale;
     
-    if (rx >= -(distSize / 2) && rx < game.width + (distSize / 2) && ry >= 0 && ry < game.height)
+    if (mx >= -(distSize / 2) && mx < game.width + (distSize / 2) && my >= 0 && my < game.height)
         ctx.drawImage(
             char[game.char].image, sprites.offset, 0, char[game.char].size, char[game.char].size, 
-            rx - (Math.trunc(distSize + (game.cam.z / ry)) / 2),
-            ry - distSize + Math.trunc((game.height + (game.cam.z / ry)) / 2),
+            mx - (Math.trunc(distSize + (game.cam.z / my)) / 2),
+            my - distSize + Math.trunc((game.height + (game.cam.z / my)) / 2),
             distSize, distSize
         );
     

@@ -2,10 +2,10 @@ document.addEventListener('keydown', key => {
     if (!key.repeat) {
         switch (key.code) {
             case 'ArrowLeft':
-                game.cam.vel.x = -game.cam.speed;
+                game.cam.vel.a = -game.cam.speed;
                 break;
             case 'ArrowRight':
-                game.cam.vel.x = game.cam.speed;
+                game.cam.vel.a = game.cam.speed;
                 break;
             case 'ArrowUp':
                 game.cam.vel.y = -game.cam.speed;
@@ -20,10 +20,10 @@ document.addEventListener('keydown', key => {
                 game.cam.vel.z = -game.cam.speed;
                 break;
             case 'KeyA':
-                game.cam.vel.a = -game.cam.speed;
+                game.cam.vel.x = -game.cam.speed;
                 break;
             case 'KeyD':
-                game.cam.vel.a = game.cam.speed;
+                game.cam.vel.x = game.cam.speed;
                 break;
             case 'Space':
                 game.cam.freefly = !game.cam.freefly;
@@ -35,7 +35,7 @@ document.addEventListener('keyup', key => {
     switch (key.code) {
         case 'ArrowLeft':
         case 'ArrowRight':
-            game.cam.vel.x = 0;
+            game.cam.vel.a = 0;
             break;
         case 'ArrowUp':
         case 'ArrowDown':
@@ -47,7 +47,7 @@ document.addEventListener('keyup', key => {
             break;
         case 'KeyA':
         case 'KeyD':
-            game.cam.vel.a = 0;
+            game.cam.vel.x = 0;
             break;
     }
 });
