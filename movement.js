@@ -84,7 +84,7 @@ function updatePos() {
             game.cam.y = ty;
     }
     if (game.cam.vel.z)
-        game.cam.z = Math.max(1, game.cam.z + game.cam.vel.z);
+        game.cam.z = Math.max(1, game.cam.z + (game.cam.vel.z * game.cam.time));
     if (game.cam.vel.a)
         game.cam.a = ((game.cam.a - (game.cam.vel.a * game.cam.time)) + 360) % 360;
     

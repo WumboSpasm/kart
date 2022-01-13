@@ -19,20 +19,24 @@
             #render     { z-index: 1; }
             #sprites    { z-index: 2; }
             
-            #debug {
+            div {
+                width: 192px;
                 white-space: pre;
+                float: left;
             }
         </style>
         <script defer src="global.js"></script>
         <script defer src="movement.js"></script>
         <script defer src="render.js"></script>
         <script defer src="sprites.js"></script>
+        <script defer src="init.js"></script>
         <script defer src="loader.js"></script>
     </head>
     <body>
         <canvas id="background"></canvas>
         <canvas id="render"></canvas>
         <canvas id="sprites"></canvas>
-        <div id="debug"></div>
+        <div id="debug1"></div>
+        <div id="debug2"></div>
     </body>
 </html>

@@ -84,8 +84,8 @@ function render() {
     
     ctx.putImageData(render.img, 0, canvas.height - game.height / 2);
     
-    if (document.querySelector('#debug'))
-        document.querySelector('#debug').textContent = 
+    if (document.querySelector('#debug1'))
+        document.querySelector('#debug1').textContent = 
             'FPS: ' + Math.trunc(60 / game.cam.time) + '\n' + 
             'Multiplier: ' + Math.trunc(game.cam.time * 100) / 100 + '\n\n' + 
             'X: ' + Math.trunc(game.cam.x * 100) / 100 + '\n' + 

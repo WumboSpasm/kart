@@ -4,7 +4,7 @@ const game = {
     get scale() { return this.height / 200 },
     
     track: 0,
-    char: 0,
+    control: 0,
     
     frame: {
         then: Date.now(),
@@ -14,7 +14,7 @@ const game = {
     
     cam: {
         x: 919.5,
-        y: 591.5,
+        y: 611.5,
         z: 20,
         a: 0,
         vel: {
@@ -37,18 +37,8 @@ const game = {
         }
     },
     
-    player: {
-        x: 919.5,
-        y: 581.5,
-        vel: {
-            x: 0,
-            y: 0
-        },
-        accel: {
-            x: 0,
-            y: 0
-        }
-    }
+    player: [],
+    depth: []
 };
 
 const char = [
@@ -56,7 +46,7 @@ const char = [
         name: 'Mario',
         path: 'mario.png',
         size: 32,
-        scale: 1.5,
+        scale: 2,
         angles: 16
     }
 ];
@@ -70,3 +60,23 @@ const track = [
         ]
     }
 ];
+
+function addPlayer(c, x, y, a = 0) {
+    game.player.push(
+        {
+            id: game.player.length,
+            char: c,
+            x: x,
+            y: y,
+            a: a,
+            vel: {
+                x: 0,
+                y: 0
+            },
+            accel: {
+                x: 0,
+                y: 0
+            }
+        }
+    );
+}

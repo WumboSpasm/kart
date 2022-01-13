@@ -7,10 +7,7 @@ function checkChars() {
     for (let p = 0; p < char.length; p++) {
         if (typeof char[p].image != 'undefined' && char[p].image.naturalWidth != 0) {
             if (p == char.length - 1) {
-                requestAnimationFrame(updatePos);
-                requestAnimationFrame(background);
-                requestAnimationFrame(render);
-                requestAnimationFrame(sprites);
+                gameInit();
                 return;
             } else
                 continue;
