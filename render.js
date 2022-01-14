@@ -43,10 +43,6 @@ const scaleImage = (img) => {
     3. Color values of pixel at map position are applied to screen pixel
 */
 function getCoords(x, y) {
-    /*
-    let mx = game.cam.x + x - (game.width  / 2),
-        my = game.cam.y + y - (game.height / 2),
-    */
     let mx = game.cam.x + ((x - (game.width  / 2)) * (game.cam.z / y)),
         my = game.cam.y + ((y - (game.height / 2)) * (game.cam.z / y)),
     
@@ -88,14 +84,14 @@ function render() {
         document.querySelector('#debug1').textContent = 
             'FPS: ' + Math.trunc(60 / game.cam.time) + '\n' + 
             'Multiplier: ' + Math.trunc(game.cam.time * 100) / 100 + '\n\n' + 
-            'X: ' + Math.trunc(game.cam.x * 100) / 100 + '\n' + 
-            'Y: ' + Math.trunc(game.cam.y * 100) / 100 + '\n' + 
+            'X: ' + Math.trunc(player[game.control].x * 100) / 100 + '\n' + 
+            'Y: ' + Math.trunc(player[game.control].y * 100) / 100 + '\n' + 
             'Z: ' + Math.trunc(game.cam.z * 100) / 100 + '\n' +
-            'Angle: ' + Math.trunc(game.cam.a * 100) / 100 + '\n\n' + 
-            'X Velocity: ' + Math.trunc(game.cam.vel.x * game.cam.time * 100) / 100 + '\n' +
-            'Y Velocity: ' + Math.trunc(game.cam.vel.y * game.cam.time * 100) / 100 + '\n' +
+            'Angle: ' + Math.trunc(player[game.control].a * 100) / 100 + '\n\n' + 
+            'X Velocity: ' + Math.trunc(player[game.control].vel.x * game.cam.time * 100) / 100 + '\n' +
+            'Y Velocity: ' + Math.trunc(player[game.control].vel.y * game.cam.time * 100) / 100 + '\n' +
             'Z Velocity: ' + Math.trunc(game.cam.vel.z * game.cam.time * 100) / 100 + '\n' +
-            'Angle Velocity: ' + Math.trunc(game.cam.vel.a * game.cam.time * 100) / 100 + '\n\n' +
+            'Angle Velocity: ' + Math.trunc(player[game.control].vel.a * game.cam.time * 100) / 100 + '\n\n' +
             'Freefly: ' + game.cam.freefly;
     
     requestAnimationFrame(render);

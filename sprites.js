@@ -1,5 +1,5 @@
 let getSpriteOrder = () => {
-    let copy = [...game.player],
+    let copy = [...player],
         list = [];
     
     copy.sort((a, b) => turn.y(a.x, a.y, game.cam.x, game.cam.y, game.cam.a) - turn.y(b.x, b.y, game.cam.x, game.cam.y, game.cam.a));
@@ -20,24 +20,24 @@ function sprites() {
     
     let order = getSpriteOrder();
     
-    for (let i = 0; i < game.player.length; i++) {
+    for (let i = 0; i < player.length; i++) {
         let id = order[i];
         
         sprites.offset = (
-            Math.round((game.cam.a + game.player[id].a) * (char[game.player[id].char].angles / 360)) * char[game.player[id].char].size
-        ) % char[game.player[id].char].image.width;
+            Math.round((((game.cam.a - player[id].a) + 360) % 360) * (char[player[id].char].angles / 360)) * char[player[id].char].size
+        ) % char[player[id].char].image.width;
         
-        let x = turn.x(game.player[id].x, game.player[id].y, game.cam.x, game.cam.y, game.cam.a) - game.cam.x,
-            y = game.cam.y - turn.y(game.player[id].x, game.player[id].y, game.cam.x, game.cam.y, game.cam.a),
+        let x = turn.x(player[id].x, player[id].y, game.cam.x, game.cam.y, game.cam.a) - game.cam.x,
+            y = game.cam.y - turn.y(player[id].x, player[id].y, game.cam.x, game.cam.y, game.cam.a),
             my  = (game.cam.z / (y + game.cam.z)) * (game.height / 2),
             mx  = (x * (my / game.cam.z)) + (game.width / 2),
         
-            distSize = (my / (game.height / 2)) * (char[game.player[id].char].size * char[game.player[id].char].scale) * (20 / game.cam.z) * game.scale;
+            distSize = (my / (game.height / 2)) * (char[player[id].char].size * char[player[id].char].scale) * (20 / game.cam.z) * game.scale;
         
         if (mx >= -(distSize / 2) && mx < game.width + (distSize / 2) && my >= 0 && my < game.height)
             ctx.drawImage(
-                char[game.player[id].char].image, sprites.offset, 0, 
-                char[game.player[id].char].size, char[game.player[id].char].size, 
+                char[player[id].char].image, sprites.offset, 0, 
+                char[player[id].char].size, char[player[id].char].size, 
                 mx - (distSize / 2), my - distSize + (game.height / 2),
                 distSize, distSize
             );
@@ -45,7 +45,7 @@ function sprites() {
     
     if (document.querySelector('#debug2'))
         document.querySelector('#debug2').textContent = 
-            'Players: ' + game.player.length + '\n\n' +
+            'Players: ' + player.length + '\n\n' +
             'Render order: ' + '\n' + getSpriteOrder().join(' ') + '\n\n' +
             'Active player: ' + game.control;
     

@@ -5,6 +5,7 @@ const game = {
     
     track: 0,
     control: 0,
+    depth: [],
     
     frame: {
         then: Date.now(),
@@ -17,39 +18,27 @@ const game = {
         y: 611.5,
         z: 20,
         a: 0,
+        get dist() { return this.z / 2 },
         vel: {
             x: 0,
             y: 0,
             z: 0,
-            a: 0,
-            d: 0
+            a: 0
         },
         speed: 2,
         freefly: false,
         time: 0,
-        get mult() { 
+        friction(p) { 
             if (!this.freefly)
                 return array.collision.data[getPixel(
-                    Math.trunc(this.x), Math.trunc(this.y), 
+                    Math.trunc(player[p].x), Math.trunc(player[p].y), 
                 array.map.width, 1 )] / 255;
             else
                 return 1;
         }
     },
-    
-    player: [],
-    depth: []
 };
 
-const char = [
-    {
-        name: 'Mario',
-        path: 'mario.png',
-        size: 32,
-        scale: 2,
-        angles: 16
-    }
-];
 const track = [
     {
         name: 'Test Track',
@@ -61,22 +50,32 @@ const track = [
     }
 ];
 
+const char = [
+    {
+        name: 'Mario',
+        path: 'mario.png',
+        size: 32,
+        scale: 2,
+        angles: 16
+    }
+];
+
+const player = [];
+
 function addPlayer(c, x, y, a = 0) {
-    game.player.push(
+    player.push(
         {
-            id: game.player.length,
+            id: player.length,
             char: c,
             x: x,
             y: y,
             a: a,
             vel: {
                 x: 0,
-                y: 0
+                y: 0,
+                a: 0
             },
-            accel: {
-                x: 0,
-                y: 0
-            }
+            speed: 2
         }
     );
 }
