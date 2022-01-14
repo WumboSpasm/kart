@@ -38,8 +38,7 @@ function sprites() {
             ctx.drawImage(
                 char[game.player[id].char].image, sprites.offset, 0, 
                 char[game.player[id].char].size, char[game.player[id].char].size, 
-                mx - (Math.trunc(distSize + (game.cam.z / my)) / 2),
-                my - distSize + Math.trunc((game.height + (game.cam.z / my)) / 2),
+                mx - (distSize / 2), my - distSize + (game.height / 2),
                 distSize, distSize
             );
     }
