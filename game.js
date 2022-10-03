@@ -79,45 +79,29 @@ const loadImage = url => new Promise((resolve, reject) => {
 document.addEventListener('keydown', key => {
     if (!key.repeat) {
         switch (key.code) {
-            case 'ArrowLeft':
-                vel.a = -vel.default; break;
-            case 'ArrowRight':
-                vel.a =  vel.default; break;
-            case 'ArrowUp':
-                vel.y = -vel.default; break;
-            case 'ArrowDown':
-                vel.y =  vel.default; break;
-            case 'KeyW':
-                vel.z =  vel.default; break;
-            case 'KeyS':
-                vel.z = -vel.default; break;
-            case 'KeyA':
-                vel.x = -vel.default; break;
-            case 'KeyD':
-                vel.x =  vel.default; break;
+            case 'ArrowLeft':  vel.a = -vel.default; break;
+            case 'ArrowRight': vel.a =  vel.default; break;
+            case 'ArrowUp':    vel.y = -vel.default; break;
+            case 'ArrowDown':  vel.y =  vel.default; break;
+            case 'KeyW':       vel.z =  vel.default; break;
+            case 'KeyS':       vel.z = -vel.default; break;
+            case 'KeyA':       vel.x = -vel.default; break;
+            case 'KeyD':       vel.x =  vel.default; break;
             
-            case 'KeyQ':
-                focus = Math.max(-1, focus - 1);
-                break;
-            case 'KeyE':
-                focus = Math.min(map.sprites.length - 1, focus + 1);
-                break;
+            case 'KeyQ': focus = Math.max(-1, focus - 1); break;
+            case 'KeyE': focus = Math.min(map.sprites.length - 1, focus + 1); break;
         }
     }
 });
 document.addEventListener('keyup', key => {
     switch (key.code) {
-        case 'ArrowLeft':
-        case 'ArrowRight':
-            vel.a = 0; break;
-        case 'ArrowUp':
-        case 'ArrowDown':
-            vel.y = 0; break;
-        case 'KeyW':
-        case 'KeyS':
-            vel.z = 0; break;
-        case 'KeyA':
-        case 'KeyD':
-            vel.x = 0; break;
+        case 'ArrowLeft':  vel.a = Math.max(vel.a, 0); break;
+        case 'ArrowRight': vel.a = Math.min(vel.a, 0); break;
+        case 'ArrowUp':    vel.y = Math.max(vel.y, 0); break;
+        case 'ArrowDown':  vel.y = Math.min(vel.y, 0); break;
+        case 'KeyW':       vel.z = Math.min(vel.z, 0); break;
+        case 'KeyS':       vel.z = Math.max(vel.z, 0); break;
+        case 'KeyA':       vel.x = Math.max(vel.x, 0); break;
+        case 'KeyD':       vel.x = Math.min(vel.x, 0); break;
     }
 });
