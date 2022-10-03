@@ -1,42 +1,30 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>3D</title>
+        <title>Kart</title>
         <style>
             body {
                 color: #fff;
                 background-color: #000;
             }
-            canvas {
+            
+            #map {
                 position: absolute;
                 top: 50%; left: 50%;
                 transform: translate(-50%, -50%) scale(2, 2);
-                image-rendering: crisp-edges;
                 image-rendering: pixelated;
             }
             
-            #background { z-index: 0; }
-            #render     { z-index: 1; }
-            #sprites    { z-index: 2; }
-            
-            div {
-                width: 192px;
-                white-space: pre;
-                float: left;
+            #debug {
+                font-family: monospace;
+                white-space: pre-line;
             }
         </style>
-        <script defer src="global.js"></script>
-        <script defer src="movement.js"></script>
-        <script defer src="render.js"></script>
-        <script defer src="sprites.js"></script>
-        <script defer src="init.js"></script>
-        <script defer src="loader.js"></script>
+        <script defer src="pseudo3d.js"></script>
+        <script defer src="game.js"></script>
     </head>
     <body>
-        <canvas id="background"></canvas>
-        <canvas id="render"></canvas>
-        <canvas id="sprites"></canvas>
-        <div id="debug1"></div>
-        <div id="debug2"></div>
+        <div id="debug"></div>
+        <canvas width="320" height="200" id="map"></div>
     </body>
 </html>
