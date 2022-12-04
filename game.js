@@ -26,14 +26,13 @@ function gameLoop() {
         map.pos.a = player.pos.a;
         map.pos.x = Map.turn.x(player.pos.x, player.pos.y + (map.pos.z / 2), player.pos.x, player.pos.y, map.pos.a);
         map.pos.y = Map.turn.y(player.pos.x, player.pos.y + (map.pos.z / 2), player.pos.x, player.pos.y, map.pos.a);
-    }
-    
-    for (let i = 0; i < map.tiles.length; i++) {
-        let tile = map.tiles[i];
         
-        if (player.pos.x >= tile.pos.x && player.pos.x < tile.pos.x + tile.width 
-         && player.pos.y >= tile.pos.y && player.pos.y < tile.pos.y + tile.height) {
-            map.tiles.splice(i, 1);
+        for (let i = 0; i < map.tiles.length; i++) {
+            let tile = map.tiles[i];
+            
+            if (player.pos.x >= tile.pos.x && player.pos.x < tile.pos.x + tile.width 
+             && player.pos.y >= tile.pos.y && player.pos.y < tile.pos.y + tile.height)
+                map.tiles.splice(i, 1);
         }
     }
     
@@ -55,8 +54,8 @@ function gameLoop() {
      : `X: ${Math.trunc(player.pos.x * 10) / 10}
         Y: ${Math.trunc(player.pos.y * 10) / 10}
         Z: ${Math.trunc(player.pos.z * 10) / 10}
-        A: ${Math.trunc(player.pos.a * 10) / 10}\n\n`)
-     + `Timer: ${Math.trunc(timer)}`;
+        A: ${Math.trunc(player.pos.a * 10) / 10}`)
+     + `\n\nTimer: ${Math.trunc(timer)}`;
     
     requestAnimationFrame(gameLoop);
 }
@@ -94,7 +93,6 @@ const loadImage = url => new Promise((resolve, reject) => {
     );
     
     map.boundTile = 0;
-    map.renderHalf = true;
     
     map.sprites.push(
         new Sprite(imageArray[5], 32, 32, 0, 0.4, 920, 584, 0, 0),
