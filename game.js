@@ -9,6 +9,8 @@ function gameLoop() {
     fps.last = now;
     fps.mult = fps.dif / 60;
     
+    let player = map.sprites[focus];
+    
     if (focus < 0) {
         map.pos.x += Map.turn.x(vel.x, vel.y, 0, 0, map.pos.a) * fps.mult;
         map.pos.y += Map.turn.y(vel.x, vel.y, 0, 0, map.pos.a) * fps.mult;
@@ -16,14 +18,23 @@ function gameLoop() {
         map.pos.a  = Map.wrap(map.pos.a + (vel.a * fps.mult), 360);
     }
     else {
-        map.sprites[focus].pos.x += Map.turn.x(vel.x, vel.y, 0, 0, map.sprites[focus].pos.a) * fps.mult;
-        map.sprites[focus].pos.y += Map.turn.y(vel.x, vel.y, 0, 0, map.sprites[focus].pos.a) * fps.mult;
-        map.sprites[focus].pos.a = Map.wrap(map.sprites[focus].pos.a + (vel.a * fps.mult), 360);
+        player.pos.x += Map.turn.x(vel.x, vel.y, 0, 0, player.pos.a) * fps.mult;
+        player.pos.y += Map.turn.y(vel.x, vel.y, 0, 0, player.pos.a) * fps.mult;
+        player.pos.a  = Map.wrap(player.pos.a + (vel.a * fps.mult), 360);
         
         map.pos.z = Math.max(1, map.pos.z + (vel.z * fps.mult));
-        map.pos.a = map.sprites[focus].pos.a;
-        map.pos.x = Map.turn.x(map.sprites[focus].pos.x, map.sprites[focus].pos.y + (map.pos.z / 2), map.sprites[focus].pos.x, map.sprites[focus].pos.y, map.pos.a);
-        map.pos.y = Map.turn.y(map.sprites[focus].pos.x, map.sprites[focus].pos.y + (map.pos.z / 2), map.sprites[focus].pos.x, map.sprites[focus].pos.y, map.pos.a);
+        map.pos.a = player.pos.a;
+        map.pos.x = Map.turn.x(player.pos.x, player.pos.y + (map.pos.z / 2), player.pos.x, player.pos.y, map.pos.a);
+        map.pos.y = Map.turn.y(player.pos.x, player.pos.y + (map.pos.z / 2), player.pos.x, player.pos.y, map.pos.a);
+    }
+    
+    for (let i = 0; i < map.tiles.length; i++) {
+        let tile = map.tiles[i];
+        
+        if (player.pos.x >= tile.pos.x && player.pos.x < tile.pos.x + tile.width 
+         && player.pos.y >= tile.pos.y && player.pos.y < tile.pos.y + tile.height) {
+            map.tiles.splice(i, 1);
+        }
     }
     
     timer += fps.mult;
@@ -41,10 +52,10 @@ function gameLoop() {
         Y: ${Math.trunc(map.pos.y * 10) / 10}
         Z: ${Math.trunc(map.pos.z * 10) / 10}
         A: ${Math.trunc(map.pos.a * 10) / 10}`
-     : `X: ${Math.trunc(map.sprites[focus].pos.x * 10) / 10}
-        Y: ${Math.trunc(map.sprites[focus].pos.y * 10) / 10}
-        Z: ${Math.trunc(map.sprites[focus].pos.z * 10) / 10}
-        A: ${Math.trunc(map.sprites[focus].pos.a * 10) / 10}\n\n`)
+     : `X: ${Math.trunc(player.pos.x * 10) / 10}
+        Y: ${Math.trunc(player.pos.y * 10) / 10}
+        Z: ${Math.trunc(player.pos.z * 10) / 10}
+        A: ${Math.trunc(player.pos.a * 10) / 10}\n\n`)
      + `Timer: ${Math.trunc(timer)}`;
     
     requestAnimationFrame(gameLoop);
